@@ -48,7 +48,7 @@
 - [ ] `serviceCode`/plano registrado no Partner Center.
 
 ## 7. Empacotamento
-- [x] `pbiviz.json` com `version` correto (campos `visual.version` e top-level sincronizados — formato pbiviz).
+- [x] `pbiviz.json` com `version` único em `visual.version` (duplicata top-level removida).
 - [x] `apiVersion` (5.11.0) compatível com `powerbi-visuals-api`.
 - [x] `icon.png` 20×20 presente e referenciado.
 - [x] `style/visual.less` compila sem erros.

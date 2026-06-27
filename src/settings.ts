@@ -109,9 +109,19 @@ class LayoutCard extends Card {
         ],
         value: { value: "normal", displayName: "Normal" },
     });
+    numberLocale = new ItemDropdown({
+        name: "numberLocale",
+        displayName: "Idioma dos numeros",
+        items: [
+            { value: "auto", displayName: "Auto (relatorio)" },
+            { value: "pt-BR", displayName: "Portugues (pt-BR)" },
+            { value: "en-US", displayName: "Ingles (en-US)" },
+        ],
+        value: { value: "auto", displayName: "Auto (relatorio)" },
+    });
     name = "layout";
     displayName = "Aparencia Geral";
-    slices = [this.layoutType, this.showCategory, this.showFooter, this.density];
+    slices = [this.layoutType, this.showCategory, this.showFooter, this.density, this.numberLocale];
 }
 
 // --- Card 2: card ------------------------------------------------------------
@@ -340,14 +350,14 @@ class SecondaryCard extends Card {
 // --- Card 10: footer ---------------------------------------------------------
 
 class FooterCard extends Card {
-    footerFontSize = new NumUpDown({ name: "footerFontSize", displayName: "Tamanho da fonte (pt)", value: 8, options: num(6, 10) });
+    font = makeFont(6, 12, 8, false);
     footerColor = fxColor("footerColor", "Cor do texto", DEFAULT_COLORS.footerColor);
     footerBorderColor = fxColor("footerBorderColor", "Cor da linha separadora", DEFAULT_COLORS.footerBorder);
     periodLabel = new TextInput({ name: "periodLabel", displayName: "Periodo (override / fx)", value: "", placeholder: "auto", instanceKind: FX_INSTANCE_KIND });
     frequencyLabel = new TextInput({ name: "frequencyLabel", displayName: "Frequencia (override / fx)", value: "", placeholder: "auto", instanceKind: FX_INSTANCE_KIND });
     name = "footer";
     displayName = "Rodape";
-    slices = [this.footerFontSize, this.footerColor, this.footerBorderColor, this.periodLabel, this.frequencyLabel];
+    slices = [this.font, this.footerColor, this.footerBorderColor, this.periodLabel, this.frequencyLabel];
 }
 
 // --- Model -------------------------------------------------------------------

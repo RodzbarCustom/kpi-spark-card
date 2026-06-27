@@ -51,8 +51,39 @@ Toda **cor de fundo** (cartão, badges de variância, fundo da barra de meta, ch
 ## 4. Layouts
 
 - **Standard** — pilha vertical rica; sparkline em largura total abaixo do valor.
-- **Compacto** — denso; valor e variância na mesma linha; ideal para grades de KPIs.
-- **Split** — informação à esquerda e sparkline à direita (premium).
+- **Compacto** — denso; valor e variância na mesma linha; ideal para grades de KPIs (gap reduz em cartões < 120 px).
+- **Split** — informação à esquerda e sparkline à direita, que preenche a altura (premium; gap reduz em < 160 px).
+
+### 4.1 Exemplos de uso
+- **MoM (mês a mês):** `Valor Principal` = medida do mês atual; `Valor de Comparação` = `CALCULATE(..., PREVIOUSMONTH())`.
+- **YoY (ano a ano):** `Valor de Comparação` = `CALCULATE(..., SAMEPERIODLASTYEAR())`.
+- **vs. Meta:** preencha `Meta` para ativar a barra de progresso e a linha de referência na sparkline.
+
+### 4.2 Variância
+- `positiveIsGood`: define se aumentar é favorável (verde) ou desfavorável (vermelho). Para custos/detratores, desligue.
+- `neutralThreshold` (%): variações de módulo ≤ esse valor são tratadas como **neutras**.
+- **Indicador**: triângulo (▲▼), seta (↑↓) ou nenhum (mostra sinal ±). A cor nunca é o único sinal.
+- `comparison = 0` não é neutro: a direção vem do sinal do valor.
+
+### 4.3 Sparkline
+- Tipos: **Linha, Área, Barra, Step**. "Suavizar linha" (Catmull-Rom) só em linha/área.
+- **Linha de referência** (meta) entra na escala e fica sempre visível; **linha de média** opcional.
+- A altura respeita a densidade (compacto menor, espaçoso maior).
+
+### 4.4 Valores e rótulos (modelo do cartão nativo)
+- **Valores** (principal e secundários): fonte, cor (+fx), **unidade** (Auto/Nenhum/Mil/Milhão/Bilhão/Trilhão),
+  **casas decimais** (Auto ou manual) e **quebra de texto**. O formato da medida (%, R$) é sempre respeitado.
+- **Rótulos** (categoria, título, secundários): caixa de **texto personalizada** com **fx** (medida de texto DAX);
+  vazio assume o nome do campo/medida. Fonte, cor (+fx), alinhamento e quebra.
+- **Secundários (1–4):** fonte/cor/quebra compartilhadas; unidade/decimais/rótulo por KPI (suporta R$ + % juntos).
+
+### 4.5 Internacionalização
+- **Idioma dos números** (card Aparência Geral): `Auto` segue o idioma do relatório (`host.locale`); ou force `pt-BR`/`en-US`.
+  Unidades e separadores acompanham o locale (ex.: `1,5 mil` em pt-BR, `1.5K` em en-US).
+
+### 4.6 Acessibilidade
+- Root `role="group"` + `aria-label` descritivo; barra de progresso `role="progressbar"` (`aria-valuenow`);
+  chips com `aria-label` "Rótulo: Valor"; sparkline `aria-hidden`. Contraste dos defaults ≥ 4.5:1.
 
 ## 5. Free vs. Premium
 

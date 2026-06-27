@@ -22,7 +22,7 @@ export class SplitRenderer {
         const columns = createHTMLElement("div", {
             display: "flex",
             flexDirection: "row",
-            gap: "12px",
+            gap: ctx.width < 160 ? "6px" : "12px",
             alignItems: "stretch",
             flex: "1 1 auto",
             minHeight: "0",

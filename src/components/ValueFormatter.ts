@@ -37,13 +37,19 @@ export class ValueFormatter {
                 : "none"
                 : displayUnits;
 
+        // Unidades dependentes do locale: pt -> mil/mi/bi/tri; demais -> K/M/B/T.
+        const isPt = locale.toLowerCase().startsWith("pt");
+        const U = isPt
+            ? { trillions: " tri", billions: " bi", millions: " mi", thousands: " mil" }
+            : { trillions: "T", billions: "B", millions: "M", thousands: "K" };
+
         let scaled = abs;
         let unit = "";
         switch (mode) {
-            case "trillions": scaled = abs / 1e12; unit = "T"; break;
-            case "billions": scaled = abs / 1e9; unit = "B"; break;
-            case "millions": scaled = abs / 1e6; unit = "M"; break;
-            case "thousands": scaled = abs / 1e3; unit = "K"; break;
+            case "trillions": scaled = abs / 1e12; unit = U.trillions; break;
+            case "billions": scaled = abs / 1e9; unit = U.billions; break;
+            case "millions": scaled = abs / 1e6; unit = U.millions; break;
+            case "thousands": scaled = abs / 1e3; unit = U.thousands; break;
             default: scaled = abs; unit = "";
         }
 

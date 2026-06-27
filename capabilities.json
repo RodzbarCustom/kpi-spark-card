@@ -126,6 +126,13 @@
                         { "value": "normal", "displayName": "Normal" },
                         { "value": "spacious", "displayName": "Espacoso" }
                     ] }
+                },
+                "numberLocale": {
+                    "type": { "enumeration": [
+                        { "value": "auto", "displayName": "Auto (relatorio)" },
+                        { "value": "pt-BR", "displayName": "Portugues (pt-BR)" },
+                        { "value": "en-US", "displayName": "Ingles (en-US)" }
+                    ] }
                 }
             }
         },
@@ -337,7 +344,11 @@
         },
         "footer": {
             "properties": {
-                "footerFontSize": { "type": { "formatting": { "fontSize": true } } },
+                "fontFamily": { "type": { "formatting": { "fontFamily": true } } },
+                "fontSize": { "type": { "formatting": { "fontSize": true } } },
+                "bold": { "type": { "bool": true } },
+                "italic": { "type": { "bool": true } },
+                "underline": { "type": { "bool": true } },
                 "footerColor": { "type": { "fill": { "solid": { "color": true } } } },
                 "footerBorderColor": { "type": { "fill": { "solid": { "color": true } } } },
                 "periodLabel": { "type": { "text": true } },

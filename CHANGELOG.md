@@ -6,6 +6,20 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-06-27
+
+### Added
+- **i18n**: opção "Idioma dos números" (Auto = idioma do relatório / pt-BR / en-US); unidades e separadores por locale.
+- **Responsividade**: gap menor no Compacto (< 120 px) e no Split (< 160 px).
+- **Rodapé com fonte própria** (família/tamanho/N/I/S), independente do título.
+- **Sparkline respeita densidade** (compacto menor, espaçoso maior).
+- Documentação expandida no README (variância, sparkline, valores/rótulos, i18n, acessibilidade).
+
+### Changed
+- `pbiviz.json`: removida a duplicação do campo `version` (mantido só `visual.version`).
+- `dataViewMapper`: cache de roles (uma passada) em vez de varrer colunas por consulta.
+- `watermark`: remove overlay anterior antes de adicionar (evita duplicação).
+
 ## [1.1.0] - 2026-06-27
 
 ### Added

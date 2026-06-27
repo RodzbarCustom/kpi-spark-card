@@ -49,8 +49,15 @@ export class DataViewMapper {
         const categories: DataViewCategoryColumn[] = cat.categories ?? [];
         const valueColumns: DataViewValueColumn[] = (cat.values ?? []) as DataViewValueColumn[];
 
-        const findValue = (role: string): DataViewValueColumn | undefined =>
-            valueColumns.find((c) => c.source.roles?.[role]);
+        // Cache de roles (uma passada) em vez de varrer as colunas a cada consulta.
+        const byRole = new Map<string, DataViewValueColumn>();
+        for (const c of valueColumns) {
+            const roles = c.source.roles ?? {};
+            for (const r of Object.keys(roles)) {
+                if (roles[r] && !byRole.has(r)) byRole.set(r, c);
+            }
+        }
+        const findValue = (role: string): DataViewValueColumn | undefined => byRole.get(role);
 
         const mainCol = findValue("mainValue");
         const mainValue = lastNumeric(mainCol?.values);

@@ -21,6 +21,7 @@ import { LicenseGuard } from "./components/LicenseGuard";
 import { applyWatermark } from "./components/watermark";
 import { clearElement } from "./utils/domUtils";
 import { ValueFormatter } from "./components/ValueFormatter";
+import { DEFAULT_LOCALE } from "./constants";
 import { RenderContext, premiumFeatureInUse } from "./renderers/cardParts";
 import { StandardRenderer } from "./renderers/StandardRenderer";
 import { CompactRenderer } from "./renderers/CompactRenderer";
@@ -77,12 +78,15 @@ export class Visual implements IVisual {
             this.root.style.position = "relative";
 
             const isPremium = this.licenseGuard.isPremium();
+            const localeSetting = String(this.settings.layout.numberLocale.value.value);
+            const locale = localeSetting === "auto" ? (this.host.locale || DEFAULT_LOCALE) : localeSetting;
             const ctx: RenderContext = {
                 data,
                 settings: this.settings,
                 isPremium,
                 width: options.viewport?.width ?? this.root.clientWidth,
                 height: options.viewport?.height ?? this.root.clientHeight,
+                locale,
             };
 
             const layout = String(this.settings.layout.layoutType.value.value);

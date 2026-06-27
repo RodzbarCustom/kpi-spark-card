@@ -3,10 +3,17 @@
 // pointer-events:none, sem alert/confirm, sem chamada de rede. Features free continuam
 // funcionando — apenas sinaliza visualmente.
 
+const WATERMARK_CLASS = "kpi-spark-watermark";
+
 export function applyWatermark(root: HTMLElement, featureName: string): void {
     root.style.position = "relative";
 
+    // Remove overlay anterior (evita duplicacao em updates subsequentes).
+    const existing = root.querySelector(`.${WATERMARK_CLASS}`);
+    if (existing) existing.remove();
+
     const overlay = document.createElement("div");
+    overlay.className = WATERMARK_CLASS;
     overlay.style.cssText = [
         "position:absolute",
         "inset:0",

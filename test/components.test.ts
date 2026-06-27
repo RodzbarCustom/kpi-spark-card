@@ -87,4 +87,17 @@ describe("ProgressBarRenderer", () => {
         // 120% -> preenchimento limitado e cor de excedido
         expect(el.textContent).toContain("120%");
     });
+
+    test("current negativo -> preenchimento 0% (sem largura negativa)", () => {
+        const el = opts({ current: -50, target: 100 });
+        const fill = el.querySelector('[role="progressbar"] > div') as HTMLElement;
+        expect(fill.style.width).toBe("0%");
+    });
+
+    test("com meta tem role=progressbar e aria-valuenow", () => {
+        const el = opts({ current: 50, target: 100 });
+        const bar = el.querySelector('[role="progressbar"]') as HTMLElement;
+        expect(bar).not.toBeNull();
+        expect(bar.getAttribute("aria-valuenow")).toBe("50");
+    });
 });

@@ -81,6 +81,30 @@ describe("DataViewMapper", () => {
         expect(r.sparkValues[2]).toBe(3);
     });
 
+    test("sparkValue ausente -> usa mainValue", () => {
+        const dv = {
+            categorical: {
+                categories: [catCol("timeSeries", ["A", "B", "C"])],
+                values: [valueCol("mainValue", [10, 20, 30])],
+            },
+        } as unknown as DataView;
+        const r = DataViewMapper.map(dv);
+        expect(r.sparkValues).toEqual([10, 20, 30]);
+    });
+
+    test("timeSeriesLabels com tamanho diferente de sparkValues nao quebra", () => {
+        const dv = {
+            categorical: {
+                categories: [catCol("timeSeries", ["A", "B"])],
+                values: [valueCol("mainValue", [10, 20, 30, 40])],
+            },
+        } as unknown as DataView;
+        const r = DataViewMapper.map(dv);
+        expect(r.isValid).toBe(true);
+        expect(r.timeSeriesLabels.length).toBe(2);
+        expect(r.sparkValues.length).toBe(4);
+    });
+
     test("secondary measures ausentes -> array vazio sem crash", () => {
         const dv = {
             categorical: { categories: [], values: [valueCol("mainValue", [1])] },

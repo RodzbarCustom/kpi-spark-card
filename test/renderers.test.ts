@@ -21,7 +21,7 @@ function makeData(over: Partial<MappedKPIData> = {}): MappedKPIData {
 }
 
 function makeCtx(data = makeData(), settings = new VisualFormattingSettingsModel()): RenderContext {
-    return { data, settings, isPremium: true, width: 320, height: 220 };
+    return { data, settings, isPremium: true, width: 320, height: 220, locale: "pt-BR" };
 }
 
 describe("Renderers (snapshot estrutural)", () => {

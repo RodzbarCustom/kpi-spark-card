@@ -14,7 +14,7 @@ function ctx(): RenderContext {
         targetValue: 2000, category: "Regiao Sul",
         timeSeriesLabels: ["Jan", "Fev", "Mar"], sparkValues: [1000, 1200, 1500], secondary: [],
     };
-    return { data, settings: new VisualFormattingSettingsModel(), isPremium: true, width: 320, height: 220 };
+    return { data, settings: new VisualFormattingSettingsModel(), isPremium: true, width: 320, height: 220, locale: "pt-BR" };
 }
 
 describe("Acessibilidade (axe)", () => {

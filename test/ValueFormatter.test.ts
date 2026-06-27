@@ -9,20 +9,26 @@ describe("ValueFormatter", () => {
         expect(ValueFormatter.format({ value: Infinity })).toBe("—");
     });
 
-    test("1500 + auto -> 1,5K (locale pt-BR)", () => {
-        expect(ValueFormatter.format({ value: 1500 })).toBe("1,5K");
+    test("1500 + auto -> 1,5 mil (locale pt-BR)", () => {
+        expect(ValueFormatter.format({ value: 1500 })).toBe("1,5 mil");
     });
 
-    test("1.500.000 + auto -> 1,5M", () => {
-        expect(ValueFormatter.format({ value: 1_500_000 })).toBe("1,5M");
+    test("1.500.000 + auto -> 1,5 mi (pt-BR)", () => {
+        expect(ValueFormatter.format({ value: 1_500_000 })).toBe("1,5 mi");
     });
 
-    test("2.000.000.000 + auto -> 2,0B", () => {
-        expect(ValueFormatter.format({ value: 2_000_000_000 })).toBe("2,0B");
+    test("locale en-US usa K/M e ponto decimal", () => {
+        expect(ValueFormatter.format({ value: 1500, locale: "en-US" })).toBe("1.5K");
+        expect(ValueFormatter.format({ value: 1_500_000, locale: "en-US" })).toBe("1.5M");
+    });
+
+    test("trilhao: pt -> tri / en -> T", () => {
+        expect(ValueFormatter.format({ value: 2e12 })).toBe("2,0 tri");
+        expect(ValueFormatter.format({ value: 2e12, locale: "en-US" })).toBe("2.0T");
     });
 
     test("valor negativo mantem sinal", () => {
-        expect(ValueFormatter.format({ value: -1500 })).toBe("-1,5K");
+        expect(ValueFormatter.format({ value: -1500 })).toBe("-1,5 mil");
     });
 
     test("displayUnits none usa separador de milhar pt-BR", () => {

@@ -10,7 +10,7 @@ function makeData(over: Partial<MappedKPIData> = {}): MappedKPIData {
     };
 }
 function ctx(data = makeData(), settings = new VisualFormattingSettingsModel()): parts.RenderContext {
-    return { data, settings, isPremium: true, width: 320, height: 220 };
+    return { data, settings, isPremium: true, width: 320, height: 220, locale: "pt-BR" };
 }
 function setEnum(slice: { value: { value: string } }, v: string): void {
     slice.value = { value: v };

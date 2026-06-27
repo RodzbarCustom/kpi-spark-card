@@ -17,6 +17,8 @@ export class CompactRenderer {
 
     public render(ctx: RenderContext): void {
         const { card, content } = buildCardSurface(ctx);
+        // Responsividade extrema: cartoes muito estreitos usam gap menor.
+        if (ctx.width < 120) content.style.gap = "2px";
         const add = (el: Node | null): void => { if (el) content.appendChild(el); };
 
         add(buildCategory(ctx));

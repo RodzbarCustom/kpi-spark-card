@@ -20,6 +20,7 @@ export interface RenderContext {
     isPremium: boolean;
     width: number;
     height: number;
+    locale: string;
 }
 
 interface FontSpec {
@@ -96,14 +97,15 @@ function formatValueNative(
     format: string | undefined,
     units: string,
     decimalsAuto: boolean,
-    decimals: number
+    decimals: number,
+    locale: string = DEFAULT_LOCALE
 ): string {
     if (value == null || !isFinite(value)) return "—";
     const fmt = valueFormatter.create({
         format: format,
         value: unitRepresentative(units, value),
         precision: decimalsAuto ? undefined : decimals,
-        cultureSelector: DEFAULT_LOCALE,
+        cultureSelector: locale,
     });
     return fmt.format(value);
 }
@@ -199,7 +201,8 @@ export function formatMainValue(ctx: RenderContext): string {
         ctx.data.mainFormat,
         String(v.displayUnits.value.value),
         v.decimalsAuto.value,
-        v.decimalPlaces.value
+        v.decimalPlaces.value,
+        ctx.locale
     );
     const prefix = ValueFormatter.sanitizeText(v.prefix.value);
     const suffix = ValueFormatter.sanitizeText(v.suffix.value);
@@ -254,7 +257,7 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
     }
 
     const pctStr = result.percentage !== null
-        ? new Intl.NumberFormat(DEFAULT_LOCALE, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(Math.abs(result.percentage)) + "%"
+        ? new Intl.NumberFormat(ctx.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(Math.abs(result.percentage)) + "%"
         : "—";
     const mv = ctx.settings.mainValue;
     const absStr = formatValueNative(
@@ -262,7 +265,8 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
         ctx.data.mainFormat,
         String(mv.displayUnits.value.value),
         mv.decimalsAuto.value,
-        mv.decimalPlaces.value
+        mv.decimalPlaces.value,
+        ctx.locale
     );
 
     const mode = String(vs.varianceMode.value.value);
@@ -319,7 +323,12 @@ export function buildSparkline(ctx: RenderContext, width: number, heightOverride
     if (!sp.sparkEnabled.value) return null;
     if (ctx.data.sparkValues.filter((v) => isFinite(v)).length < 2) return null;
 
-    const height = heightOverride != null && heightOverride > 0 ? heightOverride : sp.sparkHeight.value;
+    // Sem override, a altura respeita a densidade (compacto menor, espacoso maior).
+    const density = String(ctx.settings.layout.density.value.value);
+    const densityFactor = density === "compact" ? 0.8 : density === "spacious" ? 1.2 : 1;
+    const height = heightOverride != null && heightOverride > 0
+        ? heightOverride
+        : Math.round(sp.sparkHeight.value * densityFactor);
     const svg = createSVGElement("svg");
     setSVGAttributes(svg, {
         viewBox: `0 0 ${width} ${height}`,
@@ -364,7 +373,8 @@ export function buildProgress(ctx: RenderContext): HTMLElement | null {
         ctx.data.mainFormat,
         String(mv.displayUnits.value.value),
         mv.decimalsAuto.value,
-        mv.decimalPlaces.value
+        mv.decimalPlaces.value,
+        ctx.locale
     );
     const formattedTarget = `${ValueFormatter.sanitizeText(mv.prefix.value)}${num}${ValueFormatter.sanitizeText(mv.suffix.value)}`;
 
@@ -397,7 +407,8 @@ function formatSecondaryValue(ctx: RenderContext, kpi: { slot: number; value: nu
         kpi.format,
         String(sc.displayUnits[idx].value.value),
         sc.decimalsAuto[idx].value,
-        sc.decimals[idx].value
+        sc.decimals[idx].value,
+        ctx.locale
     );
 }
 
@@ -467,6 +478,7 @@ export function buildFooter(ctx: RenderContext): HTMLElement | null {
 
     if (!period && !freqOverride) return null;
 
+    const ffont = readFont(f.font);
     const footer = createHTMLElement("div", {
         display: "flex",
         justifyContent: "space-between",
@@ -474,9 +486,12 @@ export function buildFooter(ctx: RenderContext): HTMLElement | null {
         marginTop: "auto",
         paddingTop: "5px",
         borderTop: `1px solid ${safeColor(f.footerBorderColor.value.value, DEFAULT_COLORS.footerBorder)}`,
-        fontSize: `${f.footerFontSize.value}pt`,
+        fontSize: `${ffont.sizePt}pt`,
+        fontWeight: ffont.bold ? "bold" : "normal",
+        fontStyle: ffont.italic ? "italic" : "normal",
+        textDecoration: ffont.underline ? "underline" : "none",
         color: safeColor(f.footerColor.value.value, DEFAULT_COLORS.footerColor),
-        fontFamily: ctx.settings.title.font.fontFamily.value,
+        fontFamily: ffont.family,
     });
     const left = createHTMLElement("span");
     left.textContent = period;
