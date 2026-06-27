@@ -6,6 +6,17 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [1.1.3] - 2026-06-27
+
+### Added
+- **Suporte a Alto Contraste** (acessibilidade): quando o tema de alto contraste do Windows/Power BI esta ativo, o visual passa a usar as cores foreground/background do host (`host.colorPalette.isHighContrast`) com bordas/strokes visiveis em cartao, texto, badge de variancia, sparkline, barra de progresso e chips.
+- `aria-label` no valor principal ("titulo: valor").
+- Sparkline com **1 ponto** renderiza um ponto unico (degradacao graciosa).
+
+### Notas (relatorio de auditoria)
+- Itens "recomendados" anteriores ja estavam implementados (aria-label variancia, watermark dark-safe, ordenacao temporal, tabindex) — confirmado.
+- NAO adotados por serem regressao/conflito: NaN->0 (mantem filtragem de nao-finitos, correto); telemetria via host (contradiz PRIVACY.md "sem telemetria"; erros ja tratados por try/catch + renderingFailed); auto-sobrescrita de cor do usuario (Alto Contraste e o mecanismo correto); downsampling (sparkline ja eficiente, path unico).
+
 ## [1.1.2] - 2026-06-27
 
 ### Added

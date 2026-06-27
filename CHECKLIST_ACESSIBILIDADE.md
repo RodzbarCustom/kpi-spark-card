@@ -13,6 +13,8 @@
 - [x] Indicadores (triângulo, seta) são complementares, não exclusivos.
 
 ## 3. ARIA & Roles
+- [x] **Modo Alto Contraste** suportado (`host.colorPalette.isHighContrast` → cores foreground/background do host + strokes visiveis).
+- [x] `aria-label` no valor principal e no badge de variancia.
 - [x] Sparkline tem `aria-hidden="true"`.
 - [x] Progress bar tem `role="progressbar"` e `aria-valuemin/max/now`.
 - [x] Root tem `role="group"` com `aria-label` descritivo (categoria + título + valor).

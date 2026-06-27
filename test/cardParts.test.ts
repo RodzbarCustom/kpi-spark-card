@@ -83,11 +83,12 @@ describe("cardParts — categoria/titulo", () => {
 });
 
 describe("cardParts — sparkline/progresso/secundarios/rodape", () => {
-    test("sparkline desabilitada -> null; <2 pontos -> null", () => {
+    test("sparkline desabilitada -> null; sem pontos -> null; 1 ponto -> renderiza", () => {
         const s = new VisualFormattingSettingsModel();
         s.sparkline.sparkEnabled.value = false;
         expect(parts.buildSparkline(ctx(makeData(), s), 200)).toBeNull();
-        expect(parts.buildSparkline(ctx(makeData({ sparkValues: [1] })), 200)).toBeNull();
+        expect(parts.buildSparkline(ctx(makeData({ sparkValues: [] })), 200)).toBeNull();
+        expect(parts.buildSparkline(ctx(makeData({ sparkValues: [42] })), 200)).not.toBeNull();
     });
 
     test("progresso desabilitado -> null; sem meta -> null", () => {
@@ -208,6 +209,22 @@ describe("cardParts — formato dos secundarios", () => {
         const el = parts.buildSecondary(ctx(data, s))!;
         expect(el.textContent).toContain("1500"); // KPI1 sem unidade, 0 decimais
         expect(el.textContent).toContain("%");     // KPI2 respeita % da medida
+    });
+});
+
+describe("cardParts — alto contraste", () => {
+    test("valor principal usa o foreground do host quando HC ativo", () => {
+        const c = ctx();
+        c.hc = { enabled: true, fg: "#00FF00", bg: "#000000" };
+        const el = parts.buildMainValue(c);
+        expect(el.style.color).toBe("rgb(0, 255, 0)");
+    });
+
+    test("cartao usa background do host quando HC ativo", () => {
+        const c = ctx();
+        c.hc = { enabled: true, fg: "#00FF00", bg: "#000000" };
+        const { card } = parts.buildCardSurface(c);
+        expect(card.style.background).toBe("rgb(0, 0, 0)");
     });
 });
 

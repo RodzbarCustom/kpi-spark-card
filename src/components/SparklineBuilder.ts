@@ -28,10 +28,23 @@ export class SparklineBuilder {
     /** Renderiza a sparkline dentro do container SVG fornecido. */
     public static build(container: SVGElement, opts: SparklineOptions): void {
         const { values, width, height } = opts;
-        if (!values || values.length < 2) return;
+        if (!values || values.length < 1) return;
 
         const valid = values.filter((v) => typeof v === "number" && isFinite(v));
-        if (valid.length < 2) return;
+        if (valid.length < 1) return;
+
+        // Serie com 1 ponto: renderiza um ponto unico centralizado (degrada graciosamente).
+        if (valid.length === 1) {
+            const dot = createSVGElement("circle");
+            setSVGAttributes(dot, {
+                cx: width / 2,
+                cy: height / 2,
+                r: Math.max(2, opts.endDotRadius ?? 3),
+                fill: opts.color,
+            });
+            container.appendChild(dot);
+            return;
+        }
 
         const refEnabled = opts.referenceValue !== undefined && isFinite(opts.referenceValue);
 

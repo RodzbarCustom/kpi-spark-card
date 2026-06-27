@@ -14,6 +14,13 @@ import { createHTMLElement, createSVGElement, setSVGAttributes } from "../utils/
 import { safeColor, applyOpacity } from "../utils/colorUtils";
 import { DEFAULT_COLORS, DEFAULT_LOCALE } from "../constants";
 
+/** Cores de alto contraste fornecidas pelo host. */
+export interface HighContrast {
+    enabled: boolean;
+    fg: string;
+    bg: string;
+}
+
 export interface RenderContext {
     data: MappedKPIData;
     settings: VisualFormattingSettingsModel;
@@ -21,6 +28,7 @@ export interface RenderContext {
     width: number;
     height: number;
     locale: string;
+    hc?: HighContrast;
 }
 
 interface FontSpec {
@@ -37,6 +45,20 @@ export function densityGap(settings: VisualFormattingSettingsModel): number {
         case "spacious": return 14;
         default: return 8;
     }
+}
+
+// --- Resolucao de cor (com Alto Contraste) -----------------------------------
+
+function hcOn(ctx: RenderContext): boolean {
+    return !!ctx.hc?.enabled;
+}
+/** Cor de primeiro plano (texto/linhas): em HC usa o foreground do host. */
+function fgColor(ctx: RenderContext, userVal: string | undefined, fallback: string): string {
+    return hcOn(ctx) ? (ctx.hc!.fg || "#000000") : safeColor(userVal, fallback);
+}
+/** Cor de fundo solida: em HC usa o background do host (sem transparencia). */
+function bgColor(ctx: RenderContext, userVal: string | undefined, fallback: string, transparency: number): string {
+    return hcOn(ctx) ? (ctx.hc!.bg || "#FFFFFF") : applyOpacity(safeColor(userVal, fallback), transparency);
 }
 
 function readFont(fc: formattingSettings.FontControl): FontSpec {
@@ -122,14 +144,16 @@ export function buildCardSurface(ctx: RenderContext): CardSurface {
     const padding = s.padding.value;
     const accentEnabled = s.accentBarEnabled.value;
     const accentWidth = accentEnabled ? s.accentBarWidth.value : 0;
+    // Em alto contraste garante borda visivel (stroke claro).
+    const borderWidth = hcOn(ctx) ? Math.max(1, s.borderWidth.value) : s.borderWidth.value;
 
     const card = createHTMLElement("div", {
         position: "relative",
         boxSizing: "border-box",
         width: "100%",
         height: "100%",
-        background: applyOpacity(safeColor(s.backgroundColor.value.value, DEFAULT_COLORS.cardBackground), s.backgroundTransparency.value),
-        border: `${s.borderWidth.value}px solid ${safeColor(s.borderColor.value.value, DEFAULT_COLORS.cardBorder)}`,
+        background: bgColor(ctx, s.backgroundColor.value.value, DEFAULT_COLORS.cardBackground, s.backgroundTransparency.value),
+        border: `${borderWidth}px solid ${fgColor(ctx, s.borderColor.value.value, DEFAULT_COLORS.cardBorder)}`,
         borderRadius: `${s.borderRadius.value}px`,
         overflow: "hidden",
     });
@@ -141,7 +165,7 @@ export function buildCardSurface(ctx: RenderContext): CardSurface {
             top: "0",
             bottom: "0",
             width: `${accentWidth}px`,
-            background: safeColor(s.accentBarColor.value.value, DEFAULT_COLORS.accentBar),
+            background: fgColor(ctx, s.accentBarColor.value.value, DEFAULT_COLORS.accentBar),
         });
         card.appendChild(accent);
     }
@@ -174,7 +198,7 @@ export function buildCategory(ctx: RenderContext): HTMLElement | null {
 
     const el = createHTMLElement("div");
     el.textContent = raw;
-    applyTextStyle(el, readFont(c.font), safeColor(c.fontColor.value.value, DEFAULT_COLORS.categoryColor), String(c.alignment.value.value), c.wrap.value);
+    applyTextStyle(el, readFont(c.font), fgColor(ctx, c.fontColor.value.value, DEFAULT_COLORS.categoryColor), String(c.alignment.value.value), c.wrap.value);
     return el;
 }
 
@@ -188,7 +212,7 @@ export function buildTitle(ctx: RenderContext): HTMLElement | null {
 
     const el = createHTMLElement("div");
     el.textContent = raw;
-    applyTextStyle(el, readFont(t.font), safeColor(t.fontColor.value.value, DEFAULT_COLORS.titleColor), String(t.alignment.value.value), t.wrap.value);
+    applyTextStyle(el, readFont(t.font), fgColor(ctx, t.fontColor.value.value, DEFAULT_COLORS.titleColor), String(t.alignment.value.value), t.wrap.value);
     return el;
 }
 
@@ -212,8 +236,12 @@ export function formatMainValue(ctx: RenderContext): string {
 export function buildMainValue(ctx: RenderContext): HTMLElement {
     const v = ctx.settings.mainValue;
     const el = createHTMLElement("div");
-    el.textContent = formatMainValue(ctx);
-    applyTextStyle(el, readFont(v.font), safeColor(v.fontColor.value.value, DEFAULT_COLORS.valueColor), String(v.alignment.value.value), v.wrap.value);
+    const text = formatMainValue(ctx);
+    el.textContent = text;
+    applyTextStyle(el, readFont(v.font), fgColor(ctx, v.fontColor.value.value, DEFAULT_COLORS.valueColor), String(v.alignment.value.value), v.wrap.value);
+    // Acessibilidade: descricao textual do valor principal.
+    const title = ValueFormatter.sanitizeText(ctx.data.title);
+    el.setAttribute("aria-label", title ? `${title}: ${text}` : `Valor principal: ${text}`);
     return el;
 }
 
@@ -243,6 +271,13 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
     } else {
         color = safeColor(vs.colorNegative.value.value, DEFAULT_COLORS.varNegativeText);
         bg = applyOpacity(safeColor(vs.bgNegative.value.value, DEFAULT_COLORS.varNegativeBg), vs.bgNegativeTransparency.value);
+    }
+    // Em alto contraste: pilula foreground/background com borda visivel.
+    let badgeBorder = "none";
+    if (hcOn(ctx)) {
+        color = ctx.hc!.fg;
+        bg = ctx.hc!.bg;
+        badgeBorder = `1px solid ${ctx.hc!.fg}`;
     }
 
     // Indicador configuravel: triangulo (▲▼), seta (↑↓) ou nenhum (+/- como sinal nao-baseado-em-cor).
@@ -288,6 +323,7 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
         gap: "3px",
         color,
         background: bg,
+        border: badgeBorder,
         fontFamily: vfont.fontFamily.value,
         fontSize: `${vfont.fontSize.value}pt`,
         fontWeight: (vfont.bold?.value ?? false) ? "bold" : "normal",
@@ -309,7 +345,7 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
 
     if (label) {
         const lbl = createHTMLElement("span", {
-            color: safeColor(ctx.settings.footer.footerColor.value.value, DEFAULT_COLORS.footerColor),
+            color: fgColor(ctx, ctx.settings.footer.footerColor.value.value, DEFAULT_COLORS.footerColor),
             fontSize: `${vfont.fontSize.value}pt`,
             fontFamily: vfont.fontFamily.value,
         });
@@ -325,7 +361,8 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
 export function buildSparkline(ctx: RenderContext, width: number, heightOverride?: number): SVGElement | null {
     const sp = ctx.settings.sparkline;
     if (!sp.sparkEnabled.value) return null;
-    if (ctx.data.sparkValues.filter((v) => isFinite(v)).length < 2) return null;
+    // Aceita 1 ponto (renderiza ponto unico) ou mais; 0 pontos validos -> nao renderiza.
+    if (ctx.data.sparkValues.filter((v) => isFinite(v)).length < 1) return null;
 
     // Sem override, a altura respeita a densidade (compacto menor, espacoso maior).
     const density = String(ctx.settings.layout.density.value.value);
@@ -343,19 +380,20 @@ export function buildSparkline(ctx: RenderContext, width: number, heightOverride
     svg.style.height = `${height}px`;
     svg.style.display = "block";
 
+    const sparkColor = fgColor(ctx, sp.sparkColor.value.value, DEFAULT_COLORS.sparkColor);
     SparklineBuilder.build(svg, {
         values: ctx.data.sparkValues,
         width,
         height,
         type: String(sp.sparkType.value.value) as SparklineType,
-        color: safeColor(sp.sparkColor.value.value, DEFAULT_COLORS.sparkColor),
+        color: sparkColor,
         areaOpacity: sp.sparkAreaOpacity.value,
         lineWidth: sp.sparkLineWidth.value,
         referenceValue: sp.showRefLine.value && ctx.data.targetValue != null ? ctx.data.targetValue : undefined,
-        refLineColor: safeColor(sp.refLineColor.value.value, DEFAULT_COLORS.refLineColor),
+        refLineColor: fgColor(ctx, sp.refLineColor.value.value, DEFAULT_COLORS.refLineColor),
         refLineStyle: String(sp.refLineStyle.value.value) as "solid" | "dashed" | "dotted",
         meanLineEnabled: sp.showMeanLine.value,
-        meanLineColor: safeColor(sp.meanLineColor.value.value, DEFAULT_COLORS.meanLineColor),
+        meanLineColor: fgColor(ctx, sp.meanLineColor.value.value, DEFAULT_COLORS.meanLineColor),
         showEndDot: sp.showEndDot.value,
         endDotRadius: sp.endDotRadius.value,
         smooth: sp.sparkSmooth.value,
@@ -387,9 +425,10 @@ export function buildProgress(ctx: RenderContext): HTMLElement | null {
         target: ctx.data.targetValue,
         label: ValueFormatter.sanitizeText(t.targetLabel.value),
         formattedTarget,
-        barColor: safeColor(t.targetBarColor.value.value, DEFAULT_COLORS.targetBarFill),
-        barBgColor: applyOpacity(safeColor(t.targetBarBgColor.value.value, DEFAULT_COLORS.targetBarBg), t.targetBarBgTransparency.value),
-        exceededColor: safeColor(t.targetColorExceeded.value.value, DEFAULT_COLORS.targetExceeded),
+        barColor: fgColor(ctx, t.targetBarColor.value.value, DEFAULT_COLORS.targetBarFill),
+        barBgColor: bgColor(ctx, t.targetBarBgColor.value.value, DEFAULT_COLORS.targetBarBg, t.targetBarBgTransparency.value),
+        exceededColor: fgColor(ctx, t.targetColorExceeded.value.value, DEFAULT_COLORS.targetExceeded),
+        trackBorder: hcOn(ctx) ? ctx.hc!.fg : undefined,
         barHeight: t.targetBarHeight.value,
         barRadius: t.targetBarRadius.value,
         fontSizePt: t.font.fontSize.value,
@@ -397,7 +436,7 @@ export function buildProgress(ctx: RenderContext): HTMLElement | null {
         fontBold: t.font.bold?.value ?? false,
         fontItalic: t.font.italic?.value ?? false,
         fontUnderline: t.font.underline?.value ?? false,
-        fontColor: safeColor(ctx.settings.footer.footerColor.value.value, DEFAULT_COLORS.footerColor),
+        fontColor: fgColor(ctx, ctx.settings.footer.footerColor.value.value, DEFAULT_COLORS.footerColor),
     });
 }
 
@@ -423,12 +462,13 @@ export function buildSecondary(ctx: RenderContext): HTMLElement | null {
 
     const labelFont = readFont(sc.labelFont);
     const valueFont = readFont(sc.valueFont);
-    const labelColor = safeColor(sc.secondaryLabelColor.value.value, DEFAULT_COLORS.secondaryLabel);
-    const valueColor = safeColor(sc.secondaryValueColor.value.value, DEFAULT_COLORS.secondaryValue);
+    const labelColor = fgColor(ctx, sc.secondaryLabelColor.value.value, DEFAULT_COLORS.secondaryLabel);
+    const valueColor = fgColor(ctx, sc.secondaryValueColor.value.value, DEFAULT_COLORS.secondaryValue);
     const align = String(sc.labelAlignment.value.value);
     const labelWrap = sc.labelWrap.value;
     const valueWrap = sc.valueWrap.value;
-    const bg = applyOpacity(safeColor(sc.secondaryBgColor.value.value, DEFAULT_COLORS.secondaryBg), sc.secondaryBgTransparency.value);
+    const bg = bgColor(ctx, sc.secondaryBgColor.value.value, DEFAULT_COLORS.secondaryBg, sc.secondaryBgTransparency.value);
+    const chipBorder = hcOn(ctx) ? `1px solid ${ctx.hc!.fg}` : "none";
 
     const wrap = createHTMLElement("div", { display: "flex", gap: "6px", flexWrap: "wrap" });
 
@@ -442,6 +482,7 @@ export function buildSecondary(ctx: RenderContext): HTMLElement | null {
             flexDirection: "column",
             gap: "1px",
             background: bg,
+            border: chipBorder,
             borderRadius: "6px",
             padding: "4px 8px",
             minWidth: "0",
@@ -489,12 +530,12 @@ export function buildFooter(ctx: RenderContext): HTMLElement | null {
         alignItems: "center",
         marginTop: "auto",
         paddingTop: "5px",
-        borderTop: `1px solid ${safeColor(f.footerBorderColor.value.value, DEFAULT_COLORS.footerBorder)}`,
+        borderTop: `1px solid ${fgColor(ctx, f.footerBorderColor.value.value, DEFAULT_COLORS.footerBorder)}`,
         fontSize: `${ffont.sizePt}pt`,
         fontWeight: ffont.bold ? "bold" : "normal",
         fontStyle: ffont.italic ? "italic" : "normal",
         textDecoration: ffont.underline ? "underline" : "none",
-        color: safeColor(f.footerColor.value.value, DEFAULT_COLORS.footerColor),
+        color: fgColor(ctx, f.footerColor.value.value, DEFAULT_COLORS.footerColor),
         fontFamily: ffont.family,
     });
     const left = createHTMLElement("span");

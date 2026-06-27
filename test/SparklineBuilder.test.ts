@@ -33,9 +33,16 @@ describe("SparklineBuilder", () => {
         expect(c.childNodes.length).toBe(0);
     });
 
-    test("valores nao-finitos sao filtrados; <2 validos nao renderiza", () => {
+    test("serie com 1 ponto renderiza ponto unico (circle, sem path)", () => {
         const c = svg();
-        SparklineBuilder.build(c, { ...base, values: [NaN, 5, NaN], type: "line" });
+        SparklineBuilder.build(c, { ...base, values: [42], type: "line" });
+        expect(c.querySelector("circle")).not.toBeNull();
+        expect(c.querySelector("path")).toBeNull();
+    });
+
+    test("valores nao-finitos filtrados; 0 validos nao renderiza", () => {
+        const c = svg();
+        SparklineBuilder.build(c, { ...base, values: [NaN, NaN], type: "line" });
         expect(c.childNodes.length).toBe(0);
     });
 

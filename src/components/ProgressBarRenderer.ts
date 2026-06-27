@@ -19,6 +19,7 @@ export interface ProgressBarOptions {
     fontBold?: boolean;
     fontItalic?: boolean;
     fontUnderline?: boolean;
+    trackBorder?: string; // borda da trilha (usado em alto contraste)
 }
 
 export class ProgressBarRenderer {
@@ -71,6 +72,7 @@ export class ProgressBarRenderer {
             width: "100%",
             height: `${opts.barHeight}px`,
             background: opts.barBgColor,
+            border: opts.trackBorder ? `1px solid ${opts.trackBorder}` : "none",
             borderRadius: `${opts.barRadius}px`,
             overflow: "hidden",
         }, trackAttrs);

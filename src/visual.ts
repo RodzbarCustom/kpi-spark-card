@@ -80,6 +80,13 @@ export class Visual implements IVisual {
             const isPremium = this.licenseGuard.isPremium();
             const localeSetting = String(this.settings.layout.numberLocale.value.value);
             const locale = localeSetting === "auto" ? (this.host.locale || DEFAULT_LOCALE) : localeSetting;
+
+            // Suporte a Alto Contraste (acessibilidade): usa as cores foreground/background do host.
+            const cp = this.host.colorPalette as powerbi.extensibility.ISandboxExtendedColorPalette;
+            const hc = cp && cp.isHighContrast
+                ? { enabled: true, fg: cp.foreground?.value ?? "#000000", bg: cp.background?.value ?? "#FFFFFF" }
+                : { enabled: false, fg: "", bg: "" };
+
             const ctx: RenderContext = {
                 data,
                 settings: this.settings,
@@ -87,6 +94,7 @@ export class Visual implements IVisual {
                 width: options.viewport?.width ?? this.root.clientWidth,
                 height: options.viewport?.height ?? this.root.clientHeight,
                 locale,
+                hc,
             };
 
             const layout = String(this.settings.layout.layoutType.value.value);
