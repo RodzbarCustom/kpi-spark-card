@@ -25,7 +25,8 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 - Rodape: campos Periodo e Frequencia com **fx** (medida DAX pode gerar o texto).
 - Ate **4 KPIs secundarios** (secondaryMeasure1..4), cada um com formato proprio.
 - Controles de **fonte completos** (familia, tamanho pt, negrito, italico, sublinhado) nos cards Variancia e Meta e Progresso.
-- Novo icone do visual (sparkline + tendencia KPI, estilo flat nativo) substituindo o placeholder.
+- Novo icone do visual: cartao com barra de destaque + valor + sparkline (estilo flat nativo), substituindo o placeholder.
+- Controle de **transparencia (%)** (campo numerico com setas, 0=opaco / 100=transparente) para cada cor de fundo: cartao, badges de variancia (positivo/negativo/neutro), fundo da barra de meta e chips dos secundarios.
 - Barra de progresso vs. meta com cor condicional ao superar 100%.
 - KPIs secundarios (ate 3 medidas) — feature premium.
 - Barra de destaque (accent bar) lateral configuravel.

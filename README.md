@@ -35,7 +35,7 @@ Mapeamento `categorical`, redução `top 500`. `privileges: []`.
 | Card | Principais propriedades |
 |---|---|
 | **Aparência Geral** | layout (Standard/Compacto/Split), exibir categoria, exibir rodapé, densidade |
-| **Cartão** | cor de fundo, borda (cor/largura/raio), barra de destaque (on/cor/largura), padding |
+| **Cartão** | cor de fundo + **transparência (%)**, borda (cor/largura/raio), barra de destaque (on/cor/largura), padding |
 | **Categoria** | fonte (família/tamanho pt/N/I/S), cor, alinhamento, CAIXA ALTA |
 | **Título do KPI** | fonte, cor, alinhamento |
 | **Valor Principal** | fonte, cor, alinhamento, unidades (Auto/Mil/Mi/Bi), casas decimais, prefixo, sufixo |
@@ -46,6 +46,7 @@ Mapeamento `categorical`, redução `top 500`. `privileges: []`.
 | **Rodapé** | tamanho pt, cor, cor da linha, período/frequência (texto **ou fx/medida**) |
 
 Todas as propriedades de **cor** têm color picker + **fx** (`instanceKind: ConstantOrRule`).
+Toda **cor de fundo** (cartão, badges de variância, fundo da barra de meta, chips dos secundários) tem um controle de **transparência (%)** próprio.
 
 ## 4. Layouts
 

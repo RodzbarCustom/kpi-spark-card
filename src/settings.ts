@@ -100,6 +100,7 @@ class LayoutCard extends Card {
 
 class CardStyleCard extends Card {
     backgroundColor = fxColor("backgroundColor", "Cor de fundo", DEFAULT_COLORS.cardBackground);
+    backgroundTransparency = new NumUpDown({ name: "backgroundTransparency", displayName: "Transparencia do fundo (%)", value: 0, options: num(0, 100) });
     borderColor = fxColor("borderColor", "Cor da borda", DEFAULT_COLORS.cardBorder);
     borderWidth = new NumUpDown({ name: "borderWidth", displayName: "Largura da borda (px)", value: 1, options: num(0, 4) });
     borderRadius = new NumUpDown({ name: "borderRadius", displayName: "Raio dos cantos (px)", value: 12, options: num(0, 20) });
@@ -109,7 +110,7 @@ class CardStyleCard extends Card {
     padding = new NumUpDown({ name: "padding", displayName: "Padding interno (px)", value: 16, options: num(4, 32) });
     name = "card";
     displayName = "Cartao";
-    slices = [this.backgroundColor, this.borderColor, this.borderWidth, this.borderRadius, this.accentBarEnabled, this.accentBarColor, this.accentBarWidth, this.padding];
+    slices = [this.backgroundColor, this.backgroundTransparency, this.borderColor, this.borderWidth, this.borderRadius, this.accentBarEnabled, this.accentBarColor, this.accentBarWidth, this.padding];
 }
 
 // --- Card 3: category --------------------------------------------------------
@@ -189,16 +190,19 @@ class VarianceCard extends Card {
     positiveIsGood = new ToggleSwitch({ name: "positiveIsGood", displayName: "Positivo = favoravel", value: true });
     colorPositive = fxColor("colorPositive", "Cor positiva", DEFAULT_COLORS.varPositiveText);
     bgPositive = fxColor("bgPositive", "Fundo positivo", DEFAULT_COLORS.varPositiveBg);
+    bgPositiveTransparency = new NumUpDown({ name: "bgPositiveTransparency", displayName: "Transparencia fundo positivo (%)", value: 0, options: num(0, 100) });
     colorNegative = fxColor("colorNegative", "Cor negativa", DEFAULT_COLORS.varNegativeText);
     bgNegative = fxColor("bgNegative", "Fundo negativo", DEFAULT_COLORS.varNegativeBg);
+    bgNegativeTransparency = new NumUpDown({ name: "bgNegativeTransparency", displayName: "Transparencia fundo negativo (%)", value: 0, options: num(0, 100) });
     colorNeutral = fxColor("colorNeutral", "Cor neutra", DEFAULT_COLORS.varNeutralText);
     bgNeutral = fxColor("bgNeutral", "Fundo neutro", DEFAULT_COLORS.varNeutralBg);
+    bgNeutralTransparency = new NumUpDown({ name: "bgNeutralTransparency", displayName: "Transparencia fundo neutro (%)", value: 0, options: num(0, 100) });
     font = makeFont(6, 12, 8, true);
     neutralThreshold = new NumUpDown({ name: "neutralThreshold", displayName: "Limiar neutro (%)", value: 0.5, options: num(0, 5) });
     topLevelSlice = this.varianceEnabled;
     name = "variance";
     displayName = "Variancia";
-    slices = [this.varianceMode, this.varianceLabel, this.varianceIndicator, this.positiveIsGood, this.colorPositive, this.bgPositive, this.colorNegative, this.bgNegative, this.colorNeutral, this.bgNeutral, this.font, this.neutralThreshold];
+    slices = [this.varianceMode, this.varianceLabel, this.varianceIndicator, this.positiveIsGood, this.colorPositive, this.bgPositive, this.bgPositiveTransparency, this.colorNegative, this.bgNegative, this.bgNegativeTransparency, this.colorNeutral, this.bgNeutral, this.bgNeutralTransparency, this.font, this.neutralThreshold];
 }
 
 // --- Card 7: target ----------------------------------------------------------
@@ -208,6 +212,7 @@ class TargetCard extends Card {
     targetLabel = new TextInput({ name: "targetLabel", displayName: "Rotulo da meta", value: "Meta", placeholder: "Meta" });
     targetBarColor = fxColor("targetBarColor", "Cor de preenchimento", DEFAULT_COLORS.targetBarFill);
     targetBarBgColor = fxColor("targetBarBgColor", "Cor do fundo da barra", DEFAULT_COLORS.targetBarBg);
+    targetBarBgTransparency = new NumUpDown({ name: "targetBarBgTransparency", displayName: "Transparencia fundo da barra (%)", value: 0, options: num(0, 100) });
     targetBarHeight = new NumUpDown({ name: "targetBarHeight", displayName: "Altura da barra (px)", value: 4, options: num(2, 10) });
     targetBarRadius = new NumUpDown({ name: "targetBarRadius", displayName: "Raio dos cantos (px)", value: 2, options: num(0, 5) });
     font = makeFont(6, 11, 8, false);
@@ -215,7 +220,7 @@ class TargetCard extends Card {
     topLevelSlice = this.targetEnabled;
     name = "target";
     displayName = "Meta e Progresso";
-    slices = [this.targetLabel, this.targetBarColor, this.targetBarBgColor, this.targetBarHeight, this.targetBarRadius, this.font, this.targetColorExceeded];
+    slices = [this.targetLabel, this.targetBarColor, this.targetBarBgColor, this.targetBarBgTransparency, this.targetBarHeight, this.targetBarRadius, this.font, this.targetColorExceeded];
 }
 
 // --- Card 8: sparkline -------------------------------------------------------
@@ -288,6 +293,7 @@ class SecondaryCard extends Card {
     }));
     decimals = [1, 2, 3, 4].map((i) => new NumUpDown({ name: `decimals${i}`, displayName: `KPI ${i} - Casas decimais (manual)`, value: 1, options: num(0, 4) }));
     secondaryBgColor = fxColor("secondaryBgColor", "Cor de fundo dos chips", DEFAULT_COLORS.secondaryBg);
+    secondaryBgTransparency = new NumUpDown({ name: "secondaryBgTransparency", displayName: "Transparencia fundo dos chips (%)", value: 0, options: num(0, 100) });
     secondaryLabelSize = new NumUpDown({ name: "secondaryLabelSize", displayName: "Tamanho do rotulo (pt)", value: 8, options: num(6, 11) });
     secondaryLabelColor = fxColor("secondaryLabelColor", "Cor do rotulo", DEFAULT_COLORS.secondaryLabel);
     secondaryValueSize = new NumUpDown({ name: "secondaryValueSize", displayName: "Tamanho do valor (pt)", value: 10, options: num(8, 14) });
@@ -301,7 +307,7 @@ class SecondaryCard extends Card {
         this.formatMode[1], this.displayUnits[1], this.decimals[1],
         this.formatMode[2], this.displayUnits[2], this.decimals[2],
         this.formatMode[3], this.displayUnits[3], this.decimals[3],
-        this.secondaryBgColor, this.secondaryLabelSize, this.secondaryLabelColor,
+        this.secondaryBgColor, this.secondaryBgTransparency, this.secondaryLabelSize, this.secondaryLabelColor,
         this.secondaryValueSize, this.secondaryValueColor, this.secondaryValueBold,
     ];
 }

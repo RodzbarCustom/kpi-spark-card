@@ -11,7 +11,7 @@ import { SparklineBuilder, SparklineType } from "../components/SparklineBuilder"
 import { ProgressBarRenderer } from "../components/ProgressBarRenderer";
 import { valueFormatter } from "powerbi-visuals-utils-formattingutils";
 import { createHTMLElement, createSVGElement, setSVGAttributes } from "../utils/domUtils";
-import { safeColor } from "../utils/colorUtils";
+import { safeColor, applyOpacity } from "../utils/colorUtils";
 import { DEFAULT_COLORS, DEFAULT_LOCALE } from "../constants";
 
 export interface RenderContext {
@@ -80,7 +80,7 @@ export function buildCardSurface(ctx: RenderContext): CardSurface {
         boxSizing: "border-box",
         width: "100%",
         height: "100%",
-        background: safeColor(s.backgroundColor.value.value, DEFAULT_COLORS.cardBackground),
+        background: applyOpacity(safeColor(s.backgroundColor.value.value, DEFAULT_COLORS.cardBackground), s.backgroundTransparency.value),
         border: `${s.borderWidth.value}px solid ${safeColor(s.borderColor.value.value, DEFAULT_COLORS.cardBorder)}`,
         borderRadius: `${s.borderRadius.value}px`,
         overflow: "hidden",
@@ -184,13 +184,13 @@ export function buildVarianceBadge(ctx: RenderContext): HTMLElement | null {
     let bg: string;
     if (result.direction === "neutral") {
         color = safeColor(vs.colorNeutral.value.value, DEFAULT_COLORS.varNeutralText);
-        bg = safeColor(vs.bgNeutral.value.value, DEFAULT_COLORS.varNeutralBg);
+        bg = applyOpacity(safeColor(vs.bgNeutral.value.value, DEFAULT_COLORS.varNeutralBg), vs.bgNeutralTransparency.value);
     } else if (result.isGood) {
         color = safeColor(vs.colorPositive.value.value, DEFAULT_COLORS.varPositiveText);
-        bg = safeColor(vs.bgPositive.value.value, DEFAULT_COLORS.varPositiveBg);
+        bg = applyOpacity(safeColor(vs.bgPositive.value.value, DEFAULT_COLORS.varPositiveBg), vs.bgPositiveTransparency.value);
     } else {
         color = safeColor(vs.colorNegative.value.value, DEFAULT_COLORS.varNegativeText);
-        bg = safeColor(vs.bgNegative.value.value, DEFAULT_COLORS.varNegativeBg);
+        bg = applyOpacity(safeColor(vs.bgNegative.value.value, DEFAULT_COLORS.varNegativeBg), vs.bgNegativeTransparency.value);
     }
 
     // Indicador configuravel: triangulo (▲▼), seta (↑↓) ou nenhum (+/- como sinal nao-baseado-em-cor).
@@ -322,7 +322,7 @@ export function buildProgress(ctx: RenderContext): HTMLElement | null {
         label: ValueFormatter.sanitizeText(t.targetLabel.value),
         formattedTarget,
         barColor: safeColor(t.targetBarColor.value.value, DEFAULT_COLORS.targetBarFill),
-        barBgColor: safeColor(t.targetBarBgColor.value.value, DEFAULT_COLORS.targetBarBg),
+        barBgColor: applyOpacity(safeColor(t.targetBarBgColor.value.value, DEFAULT_COLORS.targetBarBg), t.targetBarBgTransparency.value),
         exceededColor: safeColor(t.targetColorExceeded.value.value, DEFAULT_COLORS.targetExceeded),
         barHeight: t.targetBarHeight.value,
         barRadius: t.targetBarRadius.value,
@@ -377,7 +377,7 @@ export function buildSecondary(ctx: RenderContext): HTMLElement | null {
             display: "flex",
             flexDirection: "column",
             gap: "1px",
-            background: safeColor(sc.secondaryBgColor.value.value, DEFAULT_COLORS.secondaryBg),
+            background: applyOpacity(safeColor(sc.secondaryBgColor.value.value, DEFAULT_COLORS.secondaryBg), sc.secondaryBgTransparency.value),
             borderRadius: "6px",
             padding: "4px 8px",
             minWidth: "0",

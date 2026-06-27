@@ -1,4 +1,4 @@
-import { isValidColor, safeColor } from "../src/utils/colorUtils";
+import { isValidColor, safeColor, applyOpacity } from "../src/utils/colorUtils";
 import { LicenseGuard } from "../src/components/LicenseGuard";
 import { applyWatermark } from "../src/components/watermark";
 import { ProgressBarRenderer } from "../src/components/ProgressBarRenderer";
@@ -16,6 +16,17 @@ describe("colorUtils", () => {
     test("safeColor retorna fallback para cor invalida", () => {
         expect(safeColor("#abc", "#000")).toBe("#abc");
         expect(safeColor("nope", "#000")).toBe("#000");
+    });
+
+    test("applyOpacity converte hex+transparencia em rgba (0=opaco, 100=transparente)", () => {
+        expect(applyOpacity("#185FA5", 0)).toBe("rgba(24, 95, 165, 1)");
+        expect(applyOpacity("#FFFFFF", 50)).toBe("rgba(255, 255, 255, 0.5)");
+        expect(applyOpacity("#000000", 100)).toBe("rgba(0, 0, 0, 0)");
+        expect(applyOpacity("#fff", 0)).toBe("rgba(255, 255, 255, 1)"); // shorthand
+    });
+
+    test("applyOpacity nao altera cor nao-hex", () => {
+        expect(applyOpacity("rgba(1,2,3,0.5)", 50)).toBe("rgba(1,2,3,0.5)");
     });
 });
 
