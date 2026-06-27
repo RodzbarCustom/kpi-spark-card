@@ -1,0 +1,22 @@
+# Dependencias
+node_modules/
+
+# Build / artefatos do pbiviz
+.tmp/
+dist/
+*.pbiviz
+webpack.statistics.prod.html
+
+# Testes
+coverage/
+
+# Certificados locais do pbiviz
+*.pfx
+
+# Editores / SO
+.DS_Store
+Thumbs.db
+.idea/
+
+# Logs
+npm-debug.log*
