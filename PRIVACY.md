@@ -22,4 +22,4 @@ os dados fornecidos pelo relatório, dentro do ambiente do host (Power BI Deskto
 - O visual não implementa telemetria própria.
 
 ## Contato
-- Suporte: https://github.com/RODZBAR/kpi-spark-card/issues
+- Suporte: https://github.com/RodzbarCustom/kpi-spark-card/issues
