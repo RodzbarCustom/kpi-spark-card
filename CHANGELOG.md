@@ -6,6 +6,14 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-06-28
+
+### Changed
+- **Ícone redesenhado** (`assets/icon.png` 20×20): arte agora é *full-bleed* (preenche toda a moldura) com tile azul, sparkline branca espessa em destaque, barras na base e ponto final verde. A versão anterior tinha margem excessiva e ficava pequena/vazia no painel de visualizações do Power BI. `marketing/thumbnail.png` (300×300) regenerado com a mesma arte.
+
+### Repositório
+- Projeto migrado para a conta **RodzbarCustom** (`https://github.com/RodzbarCustom/kpi-spark-card`); URLs em `pbiviz.json`, `package.json` e `PRIVACY.md` atualizadas.
+
 ## [1.1.3] - 2026-06-27
 
 ### Added
