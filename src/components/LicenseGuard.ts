@@ -10,7 +10,8 @@ import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 // ===============================
 const MONETIZATION_ENABLED = false; // TODO[certificacao]: alterar para true
 
-const PREMIUM_SERVICE_PLAN = "KPI_SPARK_CARD_PREMIUM";
+// IMPORTANTE: o Partner Center exige Plan ID em MINUSCULAS. Tem que ser identico ao plano criado la.
+const PREMIUM_SERVICE_PLAN = "kpi_spark_card_premium";
 const SERVICE_PLAN_STATE_ACTIVE = 1; // powerbi.extensibility.ServicePlanState.Active
 
 export class LicenseGuard {

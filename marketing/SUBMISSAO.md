@@ -11,7 +11,7 @@ Portal: https://partner.microsoft.com/dashboard/commercial-marketplace/overview
 | ID da oferta (imutável) | `kpi-spark-card` |
 | Alias da oferta | `KPI Spark Card` |
 | GUID (lido do pacote) | `kpiSparkCard77244AEC40844616B4ACFEE140540B9F` |
-| **ID do Plano** (digitar igual!) | `KPI_SPARK_CARD_PREMIUM` |
+| **ID do Plano** (digitar igual!) | `kpi_spark_card_premium` |
 | Preço mensal | **US$ 1,00** / usuário / mês |
 | Preço anual | **US$ 12,00** / usuário / ano (cheio) |
 | Pacote a subir | `Desktop\kpiSparkCard_PAGO_v1.1.5_PartnerCenter.pbiviz` |
@@ -68,7 +68,7 @@ Portal: https://partner.microsoft.com/dashboard/commercial-marketplace/overview
 
 ## FASE 6 — Planos e preços  ⚠️ (o "código" que tem que bater)
 1. **+ Criar novo plano.**
-2. **ID do plano:** `KPI_SPARK_CARD_PREMIUM`  ← **idêntico** ao código (sensível a maiúsculas/sublinhado).
+2. **ID do plano:** `kpi_spark_card_premium`  ← **idêntico** ao código (sensível a maiúsculas/sublinhado).
 3. **Nome do plano:** `KPI Spark Card Premium`.
 4. **Modelo de preços:** por usuário (assinatura).
 5. **Preços:**
@@ -105,6 +105,6 @@ Portal: https://partner.microsoft.com/dashboard/commercial-marketplace/overview
 - [ ] Textos colados (pt-BR)
 - [ ] 3 screenshots + logo enviados
 - [ ] Preview audience definido
-- [ ] Plano `KPI_SPARK_CARD_PREMIUM` · US$ 1,00/mês · US$ 12,00/ano · mercados
+- [ ] Plano `kpi_spark_card_premium` · US$ 1,00/mês · US$ 12,00/ano · mercados
 - [ ] Pacote `_PAGO_v1.1.5` enviado
 - [ ] Revisar e publicar
