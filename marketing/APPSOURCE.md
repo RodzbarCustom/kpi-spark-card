@@ -115,12 +115,32 @@ and progress bar). The Premium license unlocks Split layout, Bar/Step sparklines
 KPIs and reference/mean lines.
 ```
 
+### 1.3. Descrição do plano "Premium" (campo do plano no Partner Center)
+
+> Descreve o PLANO (não a oferta): o que o Premium libera vs. a versão grátis.
+
+```
+Premium — todos os recursos liberados
+
+Assinatura por usuário que desbloqueia 100% do KPI Spark Card. A versão gratuita já entrega o
+cartão essencial (valor principal, sparkline de linha/área, variância e barra de progresso).
+O plano Premium remove a marca d'água e habilita todos os recursos avançados:
+
+• Layout Split — informações à esquerda e sparkline grande à direita
+• Sparklines Barra e Step (além de Linha e Área)
+• Até 4 KPIs secundários, cada um com formatação 100% independente (fonte, cores, unidades e casas decimais próprias)
+• Linhas de referência e de média na sparkline
+• Formatação condicional (fx) por medidas DAX em todas as cores
+
+Licença por usuário, gerenciada pela Microsoft. Sem chamadas externas e sem coleta de dados.
+```
+
 ---
 
 ## 2. Guia de captura dos screenshots (1366 × 768)
 
 > Requisito Microsoft: PNG de **1366×768 px exatos**, de 1 a 5 imagens, mostrando o visual
-> em funcionamento. **Use o pacote `kpiSparkCard_SCREENSHOTS_v1.1.4_dev.pbiviz`** (build dev,
+> em funcionamento. **Use o pacote `kpiSparkCard_SCREENSHOTS_v1.1.6_dev.pbiviz`** (build dev,
 > sem marca d'água) — NÃO o pacote pago, que marca os recursos premium.
 
 ### 2.1. Preparar o Power BI Desktop
