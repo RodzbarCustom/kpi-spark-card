@@ -42,7 +42,7 @@ Mapeamento `categorical`, redução `top 500`. `privileges: []`.
 | **Variância** | on, modo (%/abs/ambos), rótulo, **indicador (triângulo/seta/nenhum)**, positivo=favorável, cores+fundos (pos/neg/neutro), **fonte (família/tamanho pt/N/I/S)**, limiar neutro |
 | **Meta e Progresso** | on, rótulo, cores (barra/fundo/excedido), altura, raio, **fonte (família/tamanho pt/N/I/S)** |
 | **Sparkline** | on, tipo (linha/área/barra/step), cor, **suavizar linha**, opacidade área, espessura, altura, linha ref/média, ponto final |
-| **KPIs Secundários (Premium)** | on, **até 4 KPIs**, **formato independente por KPI** (cada um Auto = formato da medida / Manual com unidades e decimais próprios), cor de fundo, tamanhos pt e cores de rótulo/valor, negrito |
+| **KPIs Secundários (Premium)** | on, **até 4 KPIs, tudo independente por KPI**: texto do rótulo (fx), unidades, decimais (auto/manual), **fonte (família/tamanho pt/N/I/S) de rótulo e valor**, **cor (fx) de rótulo, valor e fundo + transparência**, alinhamento e quebra — cada chip configurado isoladamente |
 | **Rodapé** | tamanho pt, cor, cor da linha, período/frequência (texto **ou fx/medida**) |
 
 Todas as propriedades de **cor** têm color picker + **fx** (`instanceKind: ConstantOrRule`).
@@ -75,7 +75,8 @@ Toda **cor de fundo** (cartão, badges de variância, fundo da barra de meta, ch
   **casas decimais** (Auto ou manual) e **quebra de texto**. O formato da medida (%, R$) é sempre respeitado.
 - **Rótulos** (categoria, título, secundários): caixa de **texto personalizada** com **fx** (medida de texto DAX);
   vazio assume o nome do campo/medida. Fonte, cor (+fx), alinhamento e quebra.
-- **Secundários (1–4):** fonte/cor/quebra compartilhadas; unidade/decimais/rótulo por KPI (suporta R$ + % juntos).
+- **Secundários (1–4):** **tudo independente por KPI** — fonte (rótulo e valor), cor (rótulo/valor/fundo) com fx,
+  transparência do fundo, alinhamento, quebra, unidade, decimais e texto do rótulo. Suporta R$ + % juntos.
 
 ### 4.5 Internacionalização
 - **Idioma dos números** (card Aparência Geral): `Auto` segue o idioma do relatório (`host.locale`); ou force `pt-BR`/`en-US`.

@@ -210,6 +210,27 @@ describe("cardParts — formato dos secundarios", () => {
         expect(el.textContent).toContain("1500"); // KPI1 sem unidade, 0 decimais
         expect(el.textContent).toContain("%");     // KPI2 respeita % da medida
     });
+
+    test("estilo independente por KPI: cores de rotulo e valor distintas", () => {
+        const s = new VisualFormattingSettingsModel();
+        s.secondary.secondaryEnabled.value = true;
+        s.secondary.labelColor[0].value = { value: "#111111" };
+        s.secondary.valueColor[0].value = { value: "#222222" };
+        s.secondary.labelColor[1].value = { value: "#333333" };
+        s.secondary.valueColor[1].value = { value: "#444444" };
+        const data = makeData({
+            secondary: [
+                { slot: 1, label: "A", value: 1 },
+                { slot: 2, label: "B", value: 2 },
+            ],
+        });
+        const el = parts.buildSecondary(ctx(data, s))!;
+        const spans = el.querySelectorAll("span");
+        expect((spans[0] as HTMLElement).style.color).toBe("rgb(17, 17, 17)"); // rotulo KPI1
+        expect((spans[1] as HTMLElement).style.color).toBe("rgb(34, 34, 34)"); // valor KPI1
+        expect((spans[2] as HTMLElement).style.color).toBe("rgb(51, 51, 51)"); // rotulo KPI2
+        expect((spans[3] as HTMLElement).style.color).toBe("rgb(68, 68, 68)"); // valor KPI2
+    });
 });
 
 describe("cardParts — alto contraste", () => {

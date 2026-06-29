@@ -1,7 +1,7 @@
 {
   "name": "kpi-spark-card",
   "description": "KPI Spark Card - Power BI custom visual: KPI card with integrated sparkline and variance.",
-  "version": "1.1.4.0",
+  "version": "1.1.5.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/RodzbarCustom/kpi-spark-card"
