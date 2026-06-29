@@ -321,29 +321,34 @@ class SecondaryCard extends Card {
     }));
     decimalsAuto = [1, 2, 3, 4].map((i) => new ToggleSwitch({ name: `decimalsAuto${i}`, displayName: `KPI ${i} - Casas decimais automaticas`, value: true }));
     decimals = [1, 2, 3, 4].map((i) => new NumUpDown({ name: `decimals${i}`, displayName: `KPI ${i} - Casas decimais`, value: 1, options: num(0, 4) }));
-    // COMPARTILHADO (rotulo): fonte + cor + alinhamento + quebra
-    labelFont = makeFontNamed("secLabel", 6, 14, 8, false);
-    secondaryLabelColor = fxColor("secondaryLabelColor", "Cor do rotulo", DEFAULT_COLORS.secondaryLabel);
-    labelAlignment = alignmentDropdown("labelAlignment");
-    labelWrap = new ToggleSwitch({ name: "labelWrap", displayName: "Quebra de texto (rotulo)", value: false });
-    // COMPARTILHADO (valor): fonte + cor + quebra
-    valueFont = makeFontNamed("secValue", 8, 18, 10, true);
-    secondaryValueColor = fxColor("secondaryValueColor", "Cor do valor", DEFAULT_COLORS.secondaryValue);
-    valueWrap = new ToggleSwitch({ name: "valueWrap", displayName: "Quebra de texto (valor)", value: false });
-    // Fundo dos chips
-    secondaryBgColor = fxColor("secondaryBgColor", "Cor de fundo dos chips", DEFAULT_COLORS.secondaryBg);
-    secondaryBgTransparency = new NumUpDown({ name: "secondaryBgTransparency", displayName: "Transparencia fundo dos chips (%)", value: 0, options: num(0, 100) });
+    // POR KPI (rotulo): fonte + cor (fx) + alinhamento + quebra
+    labelFont = [1, 2, 3, 4].map((i) => makeFontNamed(`secLabel${i}`, 6, 14, 8, false));
+    labelColor = [1, 2, 3, 4].map((i) => fxColor(`secondaryLabelColor${i}`, `KPI ${i} - Cor do rotulo`, DEFAULT_COLORS.secondaryLabel));
+    labelAlignment = [1, 2, 3, 4].map((i) => alignmentDropdown(`labelAlignment${i}`));
+    labelWrap = [1, 2, 3, 4].map((i) => new ToggleSwitch({ name: `labelWrap${i}`, displayName: `KPI ${i} - Quebra de texto (rotulo)`, value: false }));
+    // POR KPI (valor): fonte + cor (fx) + quebra
+    valueFont = [1, 2, 3, 4].map((i) => makeFontNamed(`secValue${i}`, 8, 18, 10, true));
+    valueColor = [1, 2, 3, 4].map((i) => fxColor(`secondaryValueColor${i}`, `KPI ${i} - Cor do valor`, DEFAULT_COLORS.secondaryValue));
+    valueWrap = [1, 2, 3, 4].map((i) => new ToggleSwitch({ name: `valueWrap${i}`, displayName: `KPI ${i} - Quebra de texto (valor)`, value: false }));
+    // POR KPI (fundo do chip): cor (fx) + transparencia
+    bgColor = [1, 2, 3, 4].map((i) => fxColor(`secondaryBgColor${i}`, `KPI ${i} - Cor de fundo`, DEFAULT_COLORS.secondaryBg));
+    bgTransparency = [1, 2, 3, 4].map((i) => new NumUpDown({ name: `secondaryBgTransparency${i}`, displayName: `KPI ${i} - Transparencia do fundo (%)`, value: 0, options: num(0, 100) }));
     topLevelSlice = this.secondaryEnabled;
     name = "secondary";
     displayName = "KPIs Secundarios (Premium)";
     slices = [
         this.labelText[0], this.displayUnits[0], this.decimalsAuto[0], this.decimals[0],
+        this.labelFont[0], this.labelColor[0], this.labelAlignment[0], this.labelWrap[0],
+        this.valueFont[0], this.valueColor[0], this.valueWrap[0], this.bgColor[0], this.bgTransparency[0],
         this.labelText[1], this.displayUnits[1], this.decimalsAuto[1], this.decimals[1],
+        this.labelFont[1], this.labelColor[1], this.labelAlignment[1], this.labelWrap[1],
+        this.valueFont[1], this.valueColor[1], this.valueWrap[1], this.bgColor[1], this.bgTransparency[1],
         this.labelText[2], this.displayUnits[2], this.decimalsAuto[2], this.decimals[2],
+        this.labelFont[2], this.labelColor[2], this.labelAlignment[2], this.labelWrap[2],
+        this.valueFont[2], this.valueColor[2], this.valueWrap[2], this.bgColor[2], this.bgTransparency[2],
         this.labelText[3], this.displayUnits[3], this.decimalsAuto[3], this.decimals[3],
-        this.labelFont, this.secondaryLabelColor, this.labelAlignment, this.labelWrap,
-        this.valueFont, this.secondaryValueColor, this.valueWrap,
-        this.secondaryBgColor, this.secondaryBgTransparency,
+        this.labelFont[3], this.labelColor[3], this.labelAlignment[3], this.labelWrap[3],
+        this.valueFont[3], this.valueColor[3], this.valueWrap[3], this.bgColor[3], this.bgTransparency[3],
     ];
 }
 

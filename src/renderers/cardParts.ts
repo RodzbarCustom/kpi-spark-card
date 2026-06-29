@@ -460,20 +460,22 @@ export function buildSecondary(ctx: RenderContext): HTMLElement | null {
     if (!sc.secondaryEnabled.value) return null;
     if (ctx.data.secondary.length === 0) return null;
 
-    const labelFont = readFont(sc.labelFont);
-    const valueFont = readFont(sc.valueFont);
-    const labelColor = fgColor(ctx, sc.secondaryLabelColor.value.value, DEFAULT_COLORS.secondaryLabel);
-    const valueColor = fgColor(ctx, sc.secondaryValueColor.value.value, DEFAULT_COLORS.secondaryValue);
-    const align = String(sc.labelAlignment.value.value);
-    const labelWrap = sc.labelWrap.value;
-    const valueWrap = sc.valueWrap.value;
-    const bg = bgColor(ctx, sc.secondaryBgColor.value.value, DEFAULT_COLORS.secondaryBg, sc.secondaryBgTransparency.value);
     const chipBorder = hcOn(ctx) ? `1px solid ${ctx.hc!.fg}` : "none";
 
     const wrap = createHTMLElement("div", { display: "flex", gap: "6px", flexWrap: "wrap" });
 
     for (const kpi of ctx.data.secondary) {
         const idx = Math.min(Math.max(kpi.slot - 1, 0), 3);
+        // Estilo independente por KPI (1..4).
+        const labelFont = readFont(sc.labelFont[idx]);
+        const valueFont = readFont(sc.valueFont[idx]);
+        const labelColor = fgColor(ctx, sc.labelColor[idx].value.value, DEFAULT_COLORS.secondaryLabel);
+        const valueColor = fgColor(ctx, sc.valueColor[idx].value.value, DEFAULT_COLORS.secondaryValue);
+        const align = String(sc.labelAlignment[idx].value.value);
+        const labelWrap = sc.labelWrap[idx].value;
+        const valueWrap = sc.valueWrap[idx].value;
+        const bg = bgColor(ctx, sc.bgColor[idx].value.value, DEFAULT_COLORS.secondaryBg, sc.bgTransparency[idx].value);
+
         const labelText = ValueFormatter.sanitizeText(sc.labelText[idx].value) || ValueFormatter.sanitizeText(kpi.label);
         const valueText = formatSecondaryValue(ctx, kpi);
 

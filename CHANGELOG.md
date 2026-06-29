@@ -6,6 +6,11 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [1.1.5] - 2026-06-28
+
+### Changed
+- **KPIs secundários agora 100% independentes por KPI (1–4).** Antes, fonte, cor (rótulo/valor/fundo), alinhamento e quebra eram **compartilhados** entre os 4 chips; agora cada KPI tem seus próprios controles, no mesmo molde dos demais cards: fonte do rótulo e do valor (família/tamanho pt/N/I/S), cor (fx) do rótulo, do valor e do fundo + transparência, alinhamento e quebra. Texto do rótulo, unidades e decimais já eram por KPI. `capabilities.json` passou de propriedades compartilhadas para 85 propriedades (1 toggle + 4×21). Renderizador lê o estilo por `slot` dentro do loop. Novo teste cobre cores distintas por KPI (91 testes).
+
 ## [1.1.4] - 2026-06-28
 
 ### Changed

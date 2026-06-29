@@ -181,18 +181,19 @@ Como o KPI Spark Card é **um visual** (não uma suíte) e tem forte versão gra
 posicionamento ideal é **entrada acessível** para maximizar adoção e converter pela
 necessidade dos recursos premium (Split, secundários, barra/step).
 
-### 3.2. Recomendação
-| Modelo | Preço sugerido | Observação |
+### 3.2. Preço DEFINIDO
+| Modelo | Preço | Observação |
 |---|---|---|
-| **Mensal por usuário** | **US$ 1,99/usuário/mês** | Faixa competitiva para visual único |
-| **Anual por usuário** (recomendado destacar) | **US$ 19,90/usuário/ano** | ~2 meses grátis vs. mensal; incentiva contrato anual |
+| **Mensal por usuário** | **US$ 1,00/usuário/mês** | Entrada acessível para maximizar adoção |
+| **Anual por usuário** | **US$ 12,00/usuário/ano** | Preço cheio (12 × US$ 1,00), **sem desconto** |
 
-Alternativas:
-- Mais agressivo (volume/adoção): US$ 0,99/mês.
-- Premium percebido: US$ 2,99/mês · US$ 29,90/ano.
+> Decisão do publisher (2026-06-28): US$ 1,00/mês e US$ 12,00/ano (anual cobrado integral, sem
+> incentivo de desconto). Reposicionar depois conforme a tração — baixar preço é fácil, subir
+> incomoda quem já comprou.
 
-> Dica: comece em US$ 1,99/mês + US$ 19,90/ano. Dá pra reposicionar depois conforme a tração;
-> baixar preço é fácil, subir muito incomoda quem já comprou.
+### 3.2.1. EULA
+**Contrato Padrão da Microsoft** (Standard Contract) — selecionado no Partner Center, sem EULA
+próprio. Nada a hospedar.
 
 ### 3.3. Mercados
 Habilite ao menos: **Brasil, Estados Unidos, União Europeia, Reino Unido**. Quanto mais
