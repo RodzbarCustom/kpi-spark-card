@@ -4,7 +4,7 @@ Documento de apoio para publicar o **KPI Spark Card** como visual **pago (freemi
 Marketplace Comercial (Partner Center). Conta: `rodrigo@rodzbar.com.br` · Publisher **Rodzbar** (`rodzbar`).
 
 - **GUID do visual** (lido do pacote): `kpiSparkCard77244AEC40844616B4ACFEE140540B9F`
-- **ID do Plano** (digitar no Partner Center, idêntico ao código): `KPI_SPARK_CARD_PREMIUM`
+- **ID do Plano** (digitar no Partner Center, idêntico ao código): `kpi_spark_card_premium`
 - **Pacote a submeter:** build da branch `certification` (`MONETIZATION_ENABLED=true`).
 - **URL de suporte:** https://github.com/RodzbarCustom/kpi-spark-card/issues
 - **URL de privacidade:** https://github.com/RodzbarCustom/kpi-spark-card/blob/main/PRIVACY.md

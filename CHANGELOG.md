@@ -6,6 +6,11 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [1.1.6] - 2026-06-28
+
+### Fixed
+- **Plan ID (Service Plan Identifier) em minúsculas.** O Partner Center só aceita Plan ID em letras minúsculas; `PREMIUM_SERVICE_PLAN` foi de `KPI_SPARK_CARD_PREMIUM` para **`kpi_spark_card_premium`** em `LicenseGuard.ts`. O identificador no código DEVE bater exatamente com o plano criado no Partner Center — caso contrário a Licensing API nunca reconhece a compra e o usuário fica em modo grátis. Docs (`APPSOURCE.md`, `SUBMISSAO.md`) atualizados.
+
 ## [1.1.5] - 2026-06-28
 
 ### Changed
@@ -45,7 +50,7 @@ e [Versionamento Semantico](https://semver.org/lang/pt-BR/).
 ### Notas de certificação
 - `style/visual.less` contém apenas CSS (verificado).
 - `MONETIZATION_ENABLED = true` é definido **somente na branch `certification`**; `main` permanece `false` (dev).
-- `PREMIUM_SERVICE_PLAN = "KPI_SPARK_CARD_PREMIUM"` deve coincidir exatamente com o plano cadastrado no Partner Center.
+- `PREMIUM_SERVICE_PLAN = "kpi_spark_card_premium"` deve coincidir exatamente com o plano cadastrado no Partner Center.
 
 ## [1.1.1] - 2026-06-27
 
